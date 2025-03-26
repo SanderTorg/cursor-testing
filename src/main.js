@@ -66,6 +66,7 @@ function initializeChessBoard() {
         square.appendChild(piece);
       }
 
+      // Add click event listener to the square
       square.addEventListener("click", handleChessSquareClick);
       chessBoardElement.appendChild(square);
     }
@@ -86,21 +87,22 @@ function handleChessSquareClick(e) {
   const col = parseInt(square.dataset.col);
   const piece = chessBoard[row][col];
 
-  // Clear previous selection
-  clearSelection();
-
   // If clicking on a piece of the current player's color
   if (piece && isWhitePiece(piece) === (chessCurrentPlayer === "white")) {
+    // Clear previous selection
+    clearSelection();
+
+    // Select the new piece
     selectedPiece = { row, col };
     square.classList.add("selected");
     showValidMoves(row, col);
   }
   // If clicking on a valid move square
-  else if (
-    selectedPiece &&
-    isValidMove(selectedPiece.row, selectedPiece.col, row, col)
-  ) {
-    movePiece(selectedPiece.row, selectedPiece.col, row, col);
+  else if (selectedPiece) {
+    const isValid = isValidMove(selectedPiece.row, selectedPiece.col, row, col);
+    if (isValid) {
+      movePiece(selectedPiece.row, selectedPiece.col, row, col);
+    }
   }
 }
 
@@ -309,12 +311,19 @@ function isValidMove(fromRow, fromCol, toRow, toCol) {
 
 // Move a piece
 function movePiece(fromRow, fromCol, toRow, toCol) {
-  chessBoard[toRow][toCol] = chessBoard[fromRow][fromCol];
+  // Store the piece being moved
+  const piece = chessBoard[fromRow][fromCol];
+
+  // Move the piece
+  chessBoard[toRow][toCol] = piece;
   chessBoard[fromRow][fromCol] = "";
 
   // Switch turns
   chessCurrentPlayer = chessCurrentPlayer === "white" ? "black" : "white";
   chessPlayerDisplay.textContent = chessCurrentPlayer;
+
+  // Clear selection and valid moves
+  clearSelection();
 
   // Reinitialize the board
   initializeChessBoard();
