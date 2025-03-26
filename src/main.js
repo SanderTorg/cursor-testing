@@ -116,9 +116,9 @@ function clearSelection() {
 // Show valid moves for a piece
 function showValidMoves(row, col) {
   const piece = chessBoard[row][col];
-  const moves = getValidMoves(row, col, piece);
+  validMoves = getValidMoves(row, col, piece);
 
-  moves.forEach(([r, c]) => {
+  validMoves.forEach(([r, c]) => {
     const square = document.querySelector(
       `.chess-square[data-row="${r}"][data-col="${c}"]`
     );
@@ -159,7 +159,144 @@ function getValidMoves(row, col, piece) {
         }
       });
       break;
-    // Add more piece movement logic here
+    case "♖": // White rook
+    case "♜": // Black rook
+      // Horizontal moves
+      for (let i = col + 1; i < 8; i++) {
+        if (!chessBoard[row][i]) moves.push([row, i]);
+        else {
+          if (isWhitePiece(chessBoard[row][i]) !== isWhite)
+            moves.push([row, i]);
+          break;
+        }
+      }
+      for (let i = col - 1; i >= 0; i--) {
+        if (!chessBoard[row][i]) moves.push([row, i]);
+        else {
+          if (isWhitePiece(chessBoard[row][i]) !== isWhite)
+            moves.push([row, i]);
+          break;
+        }
+      }
+      // Vertical moves
+      for (let i = row + 1; i < 8; i++) {
+        if (!chessBoard[i][col]) moves.push([i, col]);
+        else {
+          if (isWhitePiece(chessBoard[i][col]) !== isWhite)
+            moves.push([i, col]);
+          break;
+        }
+      }
+      for (let i = row - 1; i >= 0; i--) {
+        if (!chessBoard[i][col]) moves.push([i, col]);
+        else {
+          if (isWhitePiece(chessBoard[i][col]) !== isWhite)
+            moves.push([i, col]);
+          break;
+        }
+      }
+      break;
+    case "♘": // White knight
+    case "♞": // Black knight
+      const knightMoves = [
+        [-2, -1],
+        [-2, 1],
+        [-1, -2],
+        [-1, 2],
+        [1, -2],
+        [1, 2],
+        [2, -1],
+        [2, 1],
+      ];
+      knightMoves.forEach(([r, c]) => {
+        const newRow = row + r;
+        const newCol = col + c;
+        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+          if (
+            !chessBoard[newRow][newCol] ||
+            isWhitePiece(chessBoard[newRow][newCol]) !== isWhite
+          ) {
+            moves.push([newRow, newCol]);
+          }
+        }
+      });
+      break;
+    case "♗": // White bishop
+    case "♝": // Black bishop
+      // Diagonal moves
+      for (let i = 1; i < 8; i++) {
+        // Top-right
+        if (row - i >= 0 && col + i < 8) {
+          if (!chessBoard[row - i][col + i]) moves.push([row - i, col + i]);
+          else {
+            if (isWhitePiece(chessBoard[row - i][col + i]) !== isWhite)
+              moves.push([row - i, col + i]);
+            break;
+          }
+        }
+        // Top-left
+        if (row - i >= 0 && col - i >= 0) {
+          if (!chessBoard[row - i][col - i]) moves.push([row - i, col - i]);
+          else {
+            if (isWhitePiece(chessBoard[row - i][col - i]) !== isWhite)
+              moves.push([row - i, col - i]);
+            break;
+          }
+        }
+        // Bottom-right
+        if (row + i < 8 && col + i < 8) {
+          if (!chessBoard[row + i][col + i]) moves.push([row + i, col + i]);
+          else {
+            if (isWhitePiece(chessBoard[row + i][col + i]) !== isWhite)
+              moves.push([row + i, col + i]);
+            break;
+          }
+        }
+        // Bottom-left
+        if (row + i < 8 && col - i >= 0) {
+          if (!chessBoard[row + i][col - i]) moves.push([row + i, col - i]);
+          else {
+            if (isWhitePiece(chessBoard[row + i][col - i]) !== isWhite)
+              moves.push([row + i, col - i]);
+            break;
+          }
+        }
+      }
+      break;
+    case "♕": // White queen
+    case "♛": // Black queen
+      // Combine rook and bishop moves
+      const queenMoves = [
+        ...getValidMoves(row, col, isWhite ? "♖" : "♜"),
+        ...getValidMoves(row, col, isWhite ? "♗" : "♝"),
+      ];
+      moves.push(...queenMoves);
+      break;
+    case "♔": // White king
+    case "♚": // Black king
+      const kingMoves = [
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [0, -1],
+        [0, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
+      ];
+      kingMoves.forEach(([r, c]) => {
+        const newRow = row + r;
+        const newCol = col + c;
+        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+          if (
+            !chessBoard[newRow][newCol] ||
+            isWhitePiece(chessBoard[newRow][newCol]) !== isWhite
+          ) {
+            moves.push([newRow, newCol]);
+          }
+        }
+      });
+      break;
   }
 
   return moves;
