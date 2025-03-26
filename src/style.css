@@ -362,3 +362,139 @@ button:focus-visible {
     font-size: 2rem;
   }
 }
+
+/* Game Sections */
+.game-section {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-section h2 {
+  color: #646cff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Chess Styles */
+.chess-board {
+  width: 560px;
+  height: 560px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border: 2px solid #646cff;
+  border-radius: 4px;
+}
+
+.chess-square {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chess-square.light {
+  background-color: #f0d9b5;
+}
+
+.chess-square.dark {
+  background-color: #b58863;
+}
+
+.chess-square.selected {
+  background-color: #7b61ff;
+}
+
+.chess-square.valid-move {
+  background-color: #7b61ff;
+  opacity: 0.5;
+}
+
+.chess-square:hover {
+  opacity: 0.8;
+}
+
+.chess-piece {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chess-piece.white {
+  color: #fff;
+}
+
+.chess-piece.black {
+  color: #000;
+}
+
+.chess-info {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.chess-info h3 {
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+#chess-reset {
+  background-color: #646cff;
+  color: #fff;
+  border: none;
+  padding: 0.8em 1.5em;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#chess-reset:hover {
+  background-color: #535bf2;
+}
+
+/* Responsive Chess Board */
+@media (max-width: 768px) {
+  .chess-board {
+    width: 400px;
+    height: 400px;
+  }
+
+  .chess-square {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chess-piece {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chess-board {
+    width: 320px;
+    height: 320px;
+  }
+
+  .chess-square {
+    width: 40px;
+    height: 40px;
+  }
+
+  .chess-piece {
+    font-size: 1.5rem;
+  }
+}
